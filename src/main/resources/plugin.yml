@@ -5,4 +5,4 @@ api-version: '1.20'
 load: STARTUP
 authors: [Li2424]
 description: Makes items like the torch which are held in the hand floor glow. I know other plugins like this already exist, but this one is compatible with the newest Spigot/Minecraft version 1.20 / 1.20.1!
-website: https://li2424.github.io/html/projects/project.html?type=minecraft&id=glowing-items
+website: https://github.com/Li2424/GlowingItems
