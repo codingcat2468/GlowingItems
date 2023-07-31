@@ -18,10 +18,12 @@ public class Light {
         PlayerInventory inv = player.getInventory();
 
         Light.clear(plugin, player);
-        if (checkForAir(player)) {
-            if (Config.getGlowMaterials(plugin).contains(inv.getItemInMainHand().getType())
-                    || Config.getGlowMaterials(plugin).contains(inv.getItemInOffHand().getType())) {
-                Light.addSourceAt(plugin, player, 15);
+        for (int i = 0; i < 1; i++) {
+            if (checkForAir(player, i)) {
+                if (Config.getGlowMaterials(plugin).contains(inv.getItemInMainHand().getType())
+                        || Config.getGlowMaterials(plugin).contains(inv.getItemInOffHand().getType())) {
+                    Light.addSourceAt(plugin, player, i, 15);
+                }
             }
         }
     }
@@ -41,16 +43,16 @@ public class Light {
         }
     }
 
-    public static boolean checkForAir(Player p) {
+    public static boolean checkForAir(Player p, int yOffset) {
         World world = p.getWorld();
-        Block b = world.getBlockAt(p.getLocation());
+        Block b = world.getBlockAt(p.getLocation().add(0, yOffset, 0));
 
         return (b.getType() == Material.AIR);
     }
 
-    public static void addSourceAt(GlowingItems plugin, Player player, int level) {
+    public static void addSourceAt(GlowingItems plugin, Player player, int yOffset, int level) {
         World world = player.getWorld();
-        Location location = player.getLocation();
+        Location location = player.getLocation().add(0, yOffset, 0);
         Block block = world.getBlockAt(location);
 
         plugin.savedBlockStates.add(new PlacedLight(location, player, block.getType()));
