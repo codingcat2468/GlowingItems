@@ -18,9 +18,11 @@ public class Light {
         PlayerInventory inv = player.getInventory();
 
         Light.clear(plugin, player);
-        if (Config.getGlowMaterials(plugin).contains(inv.getItemInMainHand().getType())
-                || Config.getGlowMaterials(plugin).contains(inv.getItemInMainHand().getType())) {
-            Light.addSourceAt(plugin, player, 15);
+        if (checkForAir(player)) {
+            if (Config.getGlowMaterials(plugin).contains(inv.getItemInMainHand().getType())
+                    || Config.getGlowMaterials(plugin).contains(inv.getItemInOffHand().getType())) {
+                Light.addSourceAt(plugin, player, 15);
+            }
         }
     }
 
@@ -37,6 +39,13 @@ public class Light {
                 }
             }
         }
+    }
+
+    public static boolean checkForAir(Player p) {
+        World world = p.getWorld();
+        Block b = world.getBlockAt(p.getLocation());
+
+        return (b.getType() == Material.AIR);
     }
 
     public static void addSourceAt(GlowingItems plugin, Player player, int level) {
