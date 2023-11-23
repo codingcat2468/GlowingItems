@@ -6,7 +6,7 @@ I know other plugins like this already exist, but this one is compatible with th
 This part is very simple. You just have to drag the GlowingItems-X.X.X.jar file from the Releases in the plugins folder of your server and you are done!
 
 ## Configuration
-With the config.yml file, you can customize with items should glow when held in the hand. I also plan to add different brightness values for each item in the future.
+With the config.yml file, you can customize which items should glow when held in the hand. I also plan to add different brightness values for each item in the future.
 This is the default configuration:
 ```yml
 enabled: true
