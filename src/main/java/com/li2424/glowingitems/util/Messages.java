@@ -9,7 +9,7 @@ public class Messages {
     }
 
     public static void showInstructionsLink(Logger logger) {
-        logger.info("You can find instructions here: " + "https://li2424.github.io/html/projects/project.html?type=minecraft&id=glowing-items");
+        logger.info("You can find instructions here: " + "https://github.com/Li2424/GlowingItems");
     }
 
     public static void showDisableMessage(Logger logger) {
