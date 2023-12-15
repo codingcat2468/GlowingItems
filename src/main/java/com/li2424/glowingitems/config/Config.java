@@ -15,7 +15,8 @@ public class Config {
     private static final List<GlowingMaterial> DEFAULTS = List.of(
             new GlowingMaterial(Material.TORCH, 14), new GlowingMaterial(Material.SOUL_TORCH, 10), new GlowingMaterial(Material.LANTERN, 14),
             new GlowingMaterial(Material.TORCH, 15), new GlowingMaterial(Material.SOUL_LANTERN, 10), new GlowingMaterial(Material.GLOWSTONE, 15),
-            new GlowingMaterial(Material.GLOW_BERRIES, 12), new GlowingMaterial(Material.GLOW_INK_SAC, 12)
+            new GlowingMaterial(Material.GLOW_BERRIES, 12), new GlowingMaterial(Material.GLOW_INK_SAC, 12), new GlowingMaterial(Material.SEA_LANTERN, 15),
+            new GlowingMaterial(Material.AMETHYST_SHARD, 6), new GlowingMaterial(Material.AMETHYST_CLUSTER, 8)
     );
 
     @Nonnull
