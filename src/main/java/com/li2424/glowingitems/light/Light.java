@@ -28,7 +28,7 @@ public class Light {
     public static void updateForPlayer(GlowingItems plugin, Player player) {
         Light.clear(plugin, player);
 
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 3; i++) {
             if (checkForAir(player, i)) {
                 int highestLevel = 0;
                 for (Material material :
@@ -43,6 +43,8 @@ public class Light {
                 if (highestLevel > 0) {
                     Light.addSourceAt(plugin, player, i, highestLevel);
                 }
+
+                break;
             }
         }
     }
