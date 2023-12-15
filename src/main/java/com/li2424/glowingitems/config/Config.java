@@ -6,19 +6,36 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 public class Config {
+
+    private static final List<GlowingMaterial> DEFAULTS = List.of(
+            new GlowingMaterial(Material.TORCH, 14), new GlowingMaterial(Material.SOUL_TORCH, 10), new GlowingMaterial(Material.LANTERN, 14),
+            new GlowingMaterial(Material.TORCH, 15), new GlowingMaterial(Material.SOUL_LANTERN, 10), new GlowingMaterial(Material.GLOWSTONE, 15),
+            new GlowingMaterial(Material.GLOW_BERRIES, 12), new GlowingMaterial(Material.GLOW_INK_SAC, 12)
+    );
+
     @Nonnull
-    public static List<Material> getGlowMaterials(GlowingItems plugin) {
+    public static List<GlowingMaterial> getGlowMaterials(GlowingItems plugin) {
         if (!isEnabled(plugin))
             return new ArrayList<>();
         try {
-            List<String> materials = plugin.getConfig().getStringList("glowing_materials");
-            return materials.stream().map(Material::valueOf).toList();
+            FileConfiguration config = plugin.getConfig();
+            List<GlowingMaterial> materials = new ArrayList<>();
+            Set<String> keys = Objects.requireNonNull(config.getConfigurationSection("glowing_materials")).getKeys(false);
+            for (String key :
+                    keys) {
+                Material material = Material.valueOf(key);
+                int level = Integer.parseInt(Objects.requireNonNull(config.getString("glowing_materials." + key + ".level")));
+
+                materials.add(new GlowingMaterial(material, level));
+            }
+
+            return materials;
         } catch (Exception e) {
-            plugin.getLogger().warning("Configuration invalid! Cannot load data!");
             return new ArrayList<>();
         }
     }
@@ -27,7 +44,6 @@ public class Config {
         try {
             return plugin.getConfig().getBoolean("enabled");
         } catch (Exception e) {
-            plugin.getLogger().warning("Configuration invalid! Cannot load data!");
             return false;
         }
     }
@@ -37,7 +53,14 @@ public class Config {
 
         //default config
         config.addDefault("enabled", true);
-        config.addDefault("glowing_materials", Arrays.asList("TORCH", "SOUL_TORCH", "LANTERN", "SOUL_LANTERN", "GLOWSTONE", "GLOW_BERRIES", "GLOW_INK_SAC", "LIGHT"));
+
+        config.addDefault("glowing_materials", new Object());
+        for (GlowingMaterial material :
+                Config.DEFAULTS) {
+            String path = "glowing_materials." + material.getMaterial().toString();
+            config.addDefault(path, new Object());
+            config.addDefault(path + ".level", material.getLevel());
+        }
         config.options().copyDefaults(true);
 
         plugin.saveConfig();

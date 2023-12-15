@@ -2,6 +2,7 @@ package com.li2424.glowingitems.light;
 
 import com.li2424.glowingitems.GlowingItems;
 import com.li2424.glowingitems.config.Config;
+import com.li2424.glowingitems.config.GlowingMaterial;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -11,18 +12,36 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.util.Iterator;
+import java.util.List;
 
 public class Light {
 
-    public static void updateForPlayer(GlowingItems plugin, Player player) {
+    //Change inventory slots for lights here
+    public static List<Material> checks(Player player) {
         PlayerInventory inv = player.getInventory();
+        return List.of(
+                inv.getItemInMainHand().getType(),
+                inv.getItemInOffHand().getType()
+        );
+    }
 
+    public static void updateForPlayer(GlowingItems plugin, Player player) {
         Light.clear(plugin, player);
+
         for (int i = 0; i < 1; i++) {
             if (checkForAir(player, i)) {
-                if (Config.getGlowMaterials(plugin).contains(inv.getItemInMainHand().getType())
-                        || Config.getGlowMaterials(plugin).contains(inv.getItemInOffHand().getType())) {
-                    Light.addSourceAt(plugin, player, i, 15);
+                int highestLevel = 0;
+                for (Material material :
+                        Light.checks(player)) {
+                    int level = Light.getLevel(material, plugin);
+                    if (level == -1) continue;
+                    if (highestLevel >= level) continue;
+
+                    highestLevel = level;
+                }
+
+                if (highestLevel > 0) {
+                    Light.addSourceAt(plugin, player, i, highestLevel);
                 }
             }
         }
@@ -61,6 +80,19 @@ public class Light {
         Block b = world.getBlockAt(p.getLocation().add(0, yOffset, 0));
 
         return (b.getType() == Material.AIR);
+    }
+
+    public static int getLevel(Material material, GlowingItems plugin) {
+        List<GlowingMaterial> materials = Config.getGlowMaterials(plugin);
+
+        for (GlowingMaterial mat :
+                materials) {
+            if (mat.getMaterial() == material) {
+                return mat.getLevel();
+            }
+        }
+
+        return -1;
     }
 
     public static void addSourceAt(GlowingItems plugin, Player player, int yOffset, int level) {
