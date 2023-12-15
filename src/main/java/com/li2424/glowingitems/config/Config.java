@@ -1,6 +1,7 @@
 package com.li2424.glowingitems.config;
 
 import com.li2424.glowingitems.GlowingItems;
+import com.li2424.glowingitems.util.Messages;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -51,6 +52,24 @@ public class Config {
 
     public static void init(GlowingItems plugin) {
         FileConfiguration config = plugin.getConfig();
+
+        //config migration
+        List<String> glowingMaterialsOld = config.getStringList("glowing_materials");
+        if (!glowingMaterialsOld.isEmpty()) {
+            Messages.showConfigMigrating(plugin.getLogger());
+            config.createSection("glowing_materials");
+
+            for (String oldMaterial :
+                    glowingMaterialsOld) {
+                String path = "glowing_materials." + oldMaterial;
+                config.set(path, new Object());
+                config.set(path + ".level", 15);
+            }
+            plugin.saveConfig();
+            plugin.reloadConfig();
+
+            Messages.showConfigMigrated(plugin.getLogger());
+        }
 
         //default config
         config.addDefault("enabled", true);
