@@ -2,6 +2,7 @@ package com.li2424.glowingitems;
 
 import com.li2424.glowingitems.config.Config;
 import com.li2424.glowingitems.event.PlayerEventListener;
+import com.li2424.glowingitems.light.Light;
 import com.li2424.glowingitems.light.PlacedLight;
 import com.li2424.glowingitems.util.Messages;
 import org.bukkit.plugin.PluginManager;
@@ -26,6 +27,7 @@ public final class GlowingItems extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        Light.clearAll(this);
         Messages.showDisableMessage(getLogger());
     }
 

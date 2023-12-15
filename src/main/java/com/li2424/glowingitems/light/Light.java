@@ -43,6 +43,19 @@ public class Light {
         }
     }
 
+    public static void clearAll(GlowingItems plugin) {
+        for (Iterator<PlacedLight> it = plugin.savedBlockStates.iterator(); it.hasNext(); ) {
+            PlacedLight light = it.next();
+            World world = light.getLocation().getWorld();
+
+            if (world != null) {
+                world.getBlockAt(light.getLocation())
+                        .setType(light.getOriginalMaterial());
+                it.remove();
+            }
+        }
+    }
+
     public static boolean checkForAir(Player p, int yOffset) {
         World world = p.getWorld();
         Block b = world.getBlockAt(p.getLocation().add(0, yOffset, 0));
