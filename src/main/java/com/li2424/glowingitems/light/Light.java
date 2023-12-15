@@ -9,8 +9,10 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Levelled;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,14 +27,25 @@ public class Light {
         );
     }
 
-    public static void updateForPlayer(GlowingItems plugin, Player player) {
+    public static void updateForPlayer(GlowingItems plugin, Player player, int specificSlot) {
         Light.clear(plugin, player);
+
+        List<Material> specSlotLst = null;
+        if (specificSlot != -1) {
+            ItemStack specSlotStack = player.getInventory().getItem(specificSlot);
+            specSlotLst = new ArrayList<>();
+            if (specSlotStack != null) {
+                specSlotLst.add(specSlotStack.getType());
+            }
+            specSlotLst.addAll(Light.checks(player));
+        }
 
         for (int i = 0; i < 3; i++) {
             if (checkForAir(player, i)) {
                 int highestLevel = 0;
                 for (Material material :
-                        Light.checks(player)) {
+                        (specificSlot == -1) ? Light.checks(player) : specSlotLst
+                ) {
                     int level = Light.getLevel(material, plugin);
                     if (level == -1) continue;
                     if (highestLevel >= level) continue;
