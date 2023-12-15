@@ -73,6 +73,8 @@ public class Light {
 
             if (world != null) {
                 if (light.getSource() == player) {
+                    if (world.getBlockAt(light.getLocation()).getType() != Material.LIGHT) continue;
+
                     world.getBlockAt(light.getLocation())
                             .setType(light.getOriginalMaterial());
                     it.remove();
@@ -87,6 +89,8 @@ public class Light {
             World world = light.getLocation().getWorld();
 
             if (world != null) {
+                if (world.getBlockAt(light.getLocation()).getType() != Material.LIGHT) continue;
+
                 world.getBlockAt(light.getLocation())
                         .setType(light.getOriginalMaterial());
                 it.remove();
