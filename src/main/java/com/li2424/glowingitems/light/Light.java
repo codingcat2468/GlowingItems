@@ -98,7 +98,7 @@ public class Light {
         World world = p.getWorld();
         Block b = world.getBlockAt(p.getLocation().add(0, yOffset, 0));
 
-        return (b.getType() == Material.AIR);
+        return (b.getType() == Material.AIR) || (b.getType() == Material.CAVE_AIR);
     }
 
     public static int getLevel(Material material, GlowingItems plugin) {
