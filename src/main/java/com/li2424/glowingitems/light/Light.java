@@ -37,7 +37,11 @@ public class Light {
             if (specSlotStack != null) {
                 specSlotLst.add(specSlotStack.getType());
             }
-            specSlotLst.addAll(Light.checks(player));
+            for (Material mat :
+                    Light.checks(player)) {
+                if ((specSlotStack != null) && (mat == player.getInventory().getItemInMainHand().getType())) continue;
+                specSlotLst.add(mat);
+            }
         }
 
         for (int i = 0; i < 3; i++) {
