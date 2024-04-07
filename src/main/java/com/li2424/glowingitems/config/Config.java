@@ -50,6 +50,18 @@ public class Config {
         }
     }
 
+    public static boolean checkDroppedItems(GlowingItems plugin) {
+        try {
+            return plugin.getConfig().getBoolean("check-dropped-items");
+        } catch (Exception e) {
+            return true;
+        }
+    }
+
+    public static int getEntityScanBoxSize(GlowingItems plugin) {
+        return plugin.getConfig().getInt("entity-scan-box-size", 30);
+    }
+
     public static void init(GlowingItems plugin) {
         FileConfiguration config = plugin.getConfig();
 
@@ -73,13 +85,15 @@ public class Config {
 
         //default config
         config.addDefault("enabled", true);
+        config.addDefault("check-dropped-items", true);
+        config.addDefault("entity-scan-box-size", 30);
 
         config.addDefault("glowing_materials", new Object());
         for (GlowingMaterial material :
                 Config.DEFAULTS) {
-            String path = "glowing_materials." + material.getMaterial().toString();
+            String path = "glowing_materials." + material.material().toString();
             config.addDefault(path, new Object());
-            config.addDefault(path + ".level", material.getLevel());
+            config.addDefault(path + ".level", material.level());
         }
         config.options().copyDefaults(true);
 

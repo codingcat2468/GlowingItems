@@ -5,12 +5,12 @@ import java.util.logging.Logger;
 public class Messages {
     public static final String CONFIG_MIGRATED_COMMENT = "This config has been migrated from an older version!\nIf you want the individual light levels to work correctly, you have to change them manually!";
     public static void showEnableMessage(Logger logger) {
-        logger.info("GlowingItems is now enabled! Thank you for using my Plugin!");
+        logger.info("GlowingItems is now enabled, thank you for using my Plugin!");
         showInstructionsLink(logger);
     }
 
     public static void showInstructionsLink(Logger logger) {
-        logger.info("You can find instructions here: " + "https://github.com/Li2424/GlowingItems");
+        logger.info("You can find instructions here: " + "https://codingcat2468.github.io/minecraft/2024/04/07/glowing-items-plugin.html");
     }
 
     public static void showConfigMigrating(Logger logger) {
@@ -26,7 +26,7 @@ public class Messages {
     }
 
     public static void showDisabledMessage(Logger logger) {
-        logger.info("GlowingItems is disabled because \"enabled\" property of the configuration is set to false or the configuration is invaild.");
+        logger.info("GlowingItems is disabled because \"enabled\" property of the configuration is set to false or the configuration is invalid.");
         showInstructionsLink(logger);
     }
 }
