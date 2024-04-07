@@ -3,7 +3,6 @@ package com.li2424.glowingitems.util;
 import java.util.logging.Logger;
 
 public class Messages {
-    public static final String CONFIG_MIGRATED_COMMENT = "This config has been migrated from an older version!\nIf you want the individual light levels to work correctly, you have to change them manually!";
     public static void showEnableMessage(Logger logger) {
         logger.info("GlowingItems is now enabled, thank you for using my Plugin!");
         showInstructionsLink(logger);

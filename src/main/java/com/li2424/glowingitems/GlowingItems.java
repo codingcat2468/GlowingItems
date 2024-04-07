@@ -32,6 +32,7 @@ public final class GlowingItems extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        stopTasks();
         Light.clearAll(this);
         Messages.showDisableMessage(getLogger());
     }
@@ -53,5 +54,9 @@ public final class GlowingItems extends JavaPlugin {
                     Light.updateNearbyEntities(GlowingItems.this, player);
             }
         }.runTaskTimer(this, 5, 5);
+    }
+
+    public void stopTasks() {
+        updateDroppedItems.cancel();
     }
 }
