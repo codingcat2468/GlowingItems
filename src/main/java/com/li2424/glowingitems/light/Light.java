@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Levelled;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Light {
+    private static final Material LIGHT_MATERIAL = Material.LIGHT;
 
     //Change inventory slots for lights here
     public static List<Material> checks(Player player) {
@@ -77,6 +79,7 @@ public class Light {
 
                     world.getBlockAt(light.getLocation())
                             .setType(light.getOriginalMaterial());
+                    sendClientBlock(plugin, light.location(), light.originalMaterial().createBlockData());
                     it.remove();
                 }
             }
@@ -89,10 +92,7 @@ public class Light {
             World world = light.getLocation().getWorld();
 
             if (world != null) {
-                if (world.getBlockAt(light.getLocation()).getType() != Material.LIGHT) continue;
-
-                world.getBlockAt(light.getLocation())
-                        .setType(light.getOriginalMaterial());
+                sendClientBlock(plugin, light.location(), light.originalMaterial().createBlockData());
                 it.remove();
             }
         }
@@ -126,15 +126,19 @@ public class Light {
         plugin.savedBlockStates.add(new PlacedLight(location, player, block.getType()));
         block.setType(Material.LIGHT);
         changeLightLevel(block, level);
+        sendClientLightBlock(plugin, location, level);
     }
 
-    public static void changeLightLevel(Block lightBlock, int level) {
-        if (lightBlock.getType() != Material.LIGHT) {
-            throw new IllegalArgumentException("Block is not a light block");
-        }
-        Levelled levelled = (Levelled) lightBlock.getBlockData();
-        levelled.setLevel(level);
+    private static void sendClientLightBlock(GlowingItems plugin, Location location, int level) {
+        Levelled data = (Levelled) LIGHT_MATERIAL.createBlockData();
+        data.setLevel(level);
+        sendClientBlock(plugin, location, data);
+    }
 
-        lightBlock.setBlockData(levelled);
+    private static void sendClientBlock(GlowingItems plugin, Location location, BlockData blockData) {
+        Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
+        for (Player player : players) {
+            player.sendBlockChange(location, blockData);
+        }
     }
 }
